@@ -149,6 +149,7 @@ await prueba('HU-06', 'No se puede registrar una reserva si ya no hay cupos (sin
   await page.locator('#msg-reserva.error').waitFor();
   const msg = (await page.locator('#msg-reserva').textContent()).trim();
   afirmar(msg.startsWith('No hay cupos suficientes'), `mensaje: ${msg}`);
+  await page.addStyleTag({ content: '.encabezado{position:static}' }); // que el encabezado fijo no tape la captura
   await page.locator('#detalle-salida').screenshot({ path: path.join(CAPTURAS, 'hu06-sin-cupos.png') });
   return msg;
 });
