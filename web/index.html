@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Come.Tú · Ayacucho para comer</title>
+  <meta name="description" content="Conoce Huamanga a través de su comida: picanterías, Wari y Quinua en un solo paquete.">
+  <meta name="theme-color" content="#3b2416">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="img/icono-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html"><img src="img/logo.svg" alt="" width="34" height="34"><span>Come.Tú</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html" aria-current="page">Inicio</a>
+        <a href="paquete.html">Paquete</a>
+        <a href="donde-comer.html">Dónde comer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="portada">
+      <div class="contenedor">
+        <p class="eyebrow">Huamanga · Ayacucho</p>
+        <h1>Ayacucho para comer</h1>
+        <p>Conoce Huamanga a través de su comida. Picanterías, el complejo Wari y Quinua en un solo pago, con hotel, traslados y un guía del equipo.</p>
+        <div class="botones">
+          <a class="boton" href="paquete.html">Ver el paquete de S/ 320</a>
+          <a class="boton secundario" href="donde-comer.html">Dónde comer</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor">
+        <div class="cabecera-seccion">
+          <div>
+            <p class="eyebrow">Próximas salidas</p>
+            <h2>Elige tu fecha</h2>
+          </div>
+          <p>Grupos de hasta 12 viajeros.</p>
+        </div>
+        <ul class="lista-salidas" id="salidas" aria-live="polite">
+          <li class="vacio">Cargando salidas…</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor">
+        <div class="tarjeta paquete-destacado">
+          <div>
+            <p class="eyebrow">El paquete</p>
+            <h2>2 días y 1 noche</h2>
+            <ul class="chips">
+              <li>Hotel</li><li>4 comidas típicas</li><li>Wari y Quinua</li><li>Traslados</li><li>Guía</li>
+            </ul>
+            <p>Puca picante, cuy chactado y qapchi en picanterías elegidas por el equipo, sin armar el viaje por tu cuenta.</p>
+          </div>
+          <div>
+            <div class="precio">S/ 320 <small>por persona</small></div>
+            <div class="botones"><a class="boton" href="paquete.html">Ver itinerario</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>Tres pasos</h2>
+        <div class="rejilla tres">
+          <div class="tarjeta"><h3>1. Elige la fecha</h3><p>Mira cuántos cupos quedan en cada salida.</p></div>
+          <div class="tarjeta"><h3>2. Reserva por WhatsApp</h3><p>Te confirmamos el cupo y el adelanto por Yape o Plin.</p></div>
+          <div class="tarjeta"><h3>3. Llega y come</h3><p>Te recogemos y te llevamos por la ruta.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Come.Tú Experiencias · UNSCH 2026 · <span data-version></span></span>
+      <a href="admin.html">Panel del equipo</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { store } from './js/store.js';
+    import { iniciarPagina, htmlSalida, $ } from './js/ui.js';
+
+    iniciarPagina();
+    const lista = $('#salidas');
+    try {
+      const salidas = await store.listarSalidasPublicas();
+      lista.innerHTML = salidas.length
+        ? salidas.slice(0, 3).map(htmlSalida).join('')
+        : '<li class="vacio">Pronto publicaremos nuevas fechas.</li>';
+    } catch (e) {
+      lista.innerHTML = `<li class="vacio">No se pudieron cargar las salidas. Intenta de nuevo.</li>`;
+    }
+  </script>
+</body>
+</html>

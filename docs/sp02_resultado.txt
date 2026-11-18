@@ -1,0 +1,3 @@
+== SP-02: 20 reservas simultáneas sobre 1 cupo libre ==
+A) Sin bloqueo (ingenuo)        | intentos: 20 | reservas aceptadas: 20 | ocupados: 31 de 12
+B) Con bloqueo FOR UPDATE (real) | intentos: 20 | reservas aceptadas: 1 | ocupados: 12 de 12

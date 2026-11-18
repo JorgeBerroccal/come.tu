@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paquete Ayacucho para comer · Come.Tú</title>
+  <meta name="description" content="Itinerario de 2 días y 1 noche en Huamanga, Wari y Quinua por S/ 320.">
+  <meta name="theme-color" content="#3b2416">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="img/icono-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html"><img src="img/logo.svg" alt="" width="34" height="34"><span>Come.Tú</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="paquete.html" aria-current="page">Paquete</a>
+        <a href="donde-comer.html">Dónde comer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="seccion">
+      <div class="contenedor">
+        <p class="eyebrow" id="duracion"></p>
+        <h1 id="nombre-paquete">Ayacucho para comer</h1>
+        <p id="resumen"></p>
+        <div class="precio" data-prueba="precio"></div>
+      </div>
+    </section>
+
+    <section class="seccion">
+      <div class="contenedor rejilla dos">
+        <div>
+          <h2>Itinerario</h2>
+          <div id="itinerario"></div>
+        </div>
+        <div>
+          <div class="tarjeta">
+            <h3>Incluye</h3>
+            <ul class="lista-check" id="incluye" data-prueba="incluye"></ul>
+            <h3 style="margin-top:1.25rem">No incluye</h3>
+            <ul class="lista-check no" id="no-incluye" data-prueba="no-incluye"></ul>
+            <div class="total"><span>Precio total por persona</span><span data-prueba="total"></span></div>
+            <p class="pista">Sin cargos adicionales: el precio incluye todo lo de la lista.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion" id="fechas">
+      <div class="contenedor">
+        <div class="cabecera-seccion">
+          <div>
+            <p class="eyebrow">Fechas de salida</p>
+            <h2>Cupos disponibles</h2>
+          </div>
+          <p>Reserva tu cupo por WhatsApp.</p>
+        </div>
+        <ul class="lista-salidas" id="salidas" aria-live="polite">
+          <li class="vacio">Cargando salidas…</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Come.Tú Experiencias · UNSCH 2026 · <span data-version></span></span>
+      <a href="admin.html">Panel del equipo</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { store } from './js/store.js';
+    import { PAQUETE } from './js/contenido.js';
+    import { iniciarPagina, htmlSalida, esc, soles, $ } from './js/ui.js';
+
+    iniciarPagina();
+    const p = PAQUETE;
+    $('#duracion').textContent = p.duracion;
+    $('#nombre-paquete').textContent = p.nombre;
+    $('#resumen').textContent = p.resumen;
+    $('[data-prueba="precio"]').innerHTML = `${soles(p.precio)} <small>por persona</small>`;
+    $('[data-prueba="total"]').textContent = soles(p.precio);
+    $('#itinerario').innerHTML = p.dias.map(d => `
+      <div class="dia">
+        <h3>${esc(d.titulo)}</h3>
+        <ol class="paradas">
+          ${d.paradas.map(x => `<li><span class="hora">${esc(x.hora)}</span><div><strong>${esc(x.titulo)}</strong><span class="txt">${esc(x.texto)}</span></div></li>`).join('')}
+        </ol>
+      </div>`).join('');
+    $('#incluye').innerHTML = p.incluye.map(t => `<li>${esc(t)}</li>`).join('');
+    $('#no-incluye').innerHTML = p.noIncluye.map(t => `<li>${esc(t)}</li>`).join('');
+
+    const lista = $('#salidas');
+    try {
+      const salidas = await store.listarSalidasPublicas();
+      lista.innerHTML = salidas.length ? salidas.map(htmlSalida).join('') : '<li class="vacio">Pronto publicaremos nuevas fechas.</li>';
+    } catch {
+      lista.innerHTML = '<li class="vacio">No se pudieron cargar las salidas. Intenta de nuevo.</li>';
+    }
+  </script>
+</body>
+</html>

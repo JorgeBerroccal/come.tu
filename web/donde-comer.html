@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dónde comer en Huamanga · Come.Tú</title>
+  <meta name="description" content="Picanterías recomendadas en Huamanga y qué plato pedir en cada una.">
+  <meta name="theme-color" content="#3b2416">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="img/icono-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html"><img src="img/logo.svg" alt="" width="34" height="34"><span>Come.Tú</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="paquete.html">Paquete</a>
+        <a href="donde-comer.html" aria-current="page">Dónde comer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="seccion">
+      <div class="contenedor">
+        <p class="eyebrow">Guía gratuita</p>
+        <h1>Dónde comer en Huamanga</h1>
+        <p>Toca una picantería para ver su dirección, su horario, el plato que recomendamos y cuánto cuesta.</p>
+        <ul class="picanterias" id="picanterias" aria-live="polite">
+          <li class="vacio">Cargando picanterías…</li>
+        </ul>
+        <p class="pista" id="nota-demo" hidden style="margin-top:1rem">Datos de demostración: los nombres son ficticios y se reemplazarán por las picanterías aliadas.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="detalle" aria-labelledby="detalle-nombre">
+    <div class="dialogo-cuerpo">
+      <form method="dialog"><button class="cerrar" aria-label="Cerrar">×</button></form>
+      <p class="eyebrow" data-prueba="plato"></p>
+      <h2 id="detalle-nombre"></h2>
+      <p data-prueba="descripcion"></p>
+      <dl>
+        <dt>Dirección</dt><dd data-prueba="direccion"></dd>
+        <dt>Horario</dt><dd data-prueba="horario"></dd>
+        <dt>Precio aprox.</dt><dd data-prueba="precio"></dd>
+      </dl>
+      <a class="boton" data-prueba="mapa" target="_blank" rel="noopener">Abrir en Google Maps</a>
+    </div>
+  </dialog>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Come.Tú Experiencias · UNSCH 2026 · <span data-version></span></span>
+      <a href="admin.html">Panel del equipo</a>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { store, MODO_DEMO } from './js/store.js';
+    import { iniciarPagina, esc, $ } from './js/ui.js';
+
+    iniciarPagina();
+    if (MODO_DEMO) $('#nota-demo').hidden = false;
+
+    const lista = $('#picanterias');
+    const dialogo = $('#detalle');
+    let picanterias = [];
+
+    function enlaceMapa(p) {
+      const consulta = `${p.direccion}, Ayacucho, Perú`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(consulta)}`;
+    }
+
+    function abrir(p) {
+      $('#detalle-nombre').textContent = p.nombre;
+      $('[data-prueba="plato"]', dialogo).textContent = `Plato recomendado: ${p.plato}`;
+      $('[data-prueba="descripcion"]', dialogo).textContent = p.descripcion;
+      $('[data-prueba="direccion"]', dialogo).textContent = p.direccion;
+      $('[data-prueba="horario"]', dialogo).textContent = p.horario;
+      $('[data-prueba="precio"]', dialogo).textContent = `S/ ${p.precio_min} a S/ ${p.precio_max}`;
+      $('[data-prueba="mapa"]', dialogo).href = enlaceMapa(p);
+      dialogo.showModal();
+    }
+
+    try {
+      picanterias = await store.listarPicanterias();
+      lista.innerHTML = picanterias.map((p, i) => `
+        <li>
+          <button class="picanteria" data-indice="${i}">
+            <span class="icono" aria-hidden="true">${esc(p.plato.charAt(0))}</span>
+            <span><span class="nombre">${esc(p.nombre)}</span><span class="plato">${esc(p.plato)} · S/ ${p.precio_min}–${p.precio_max}</span></span>
+          </button>
+        </li>`).join('');
+      lista.addEventListener('click', e => {
+        const b = e.target.closest('[data-indice]');
+        if (b) abrir(picanterias[Number(b.dataset.indice)]);
+      });
+    } catch {
+      lista.innerHTML = '<li class="vacio">No se pudieron cargar las picanterías.</li>';
+    }
+    dialogo.addEventListener('click', e => { if (e.target === dialogo) dialogo.close(); });
+  </script>
+</body>
+</html>

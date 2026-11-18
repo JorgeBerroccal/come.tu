@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel del equipo · Come.Tú</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#3b2416">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html"><img src="img/logo.svg" alt="" width="34" height="34"><span>Come.Tú</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Ver sitio</a>
+        <a href="admin.html" aria-current="page">Panel</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="seccion">
+    <div class="contenedor">
+
+      <!-- Acceso solo para el equipo -->
+      <section id="acceso" class="tarjeta oculto" style="max-width:420px;margin:0 auto">
+        <p class="eyebrow">Solo para el equipo</p>
+        <h1 style="font-size:2rem">Panel de salidas</h1>
+        <form id="form-acceso">
+          <div class="campo"><label for="correo">Correo</label><input id="correo" type="email" autocomplete="username" required></div>
+          <div class="campo"><label for="clave">Contraseña</label><input id="clave" type="password" autocomplete="current-password" required></div>
+          <button class="boton" type="submit" style="width:100%">Entrar</button>
+          <p class="mensaje error oculto" id="error-acceso" role="alert"></p>
+          <p class="pista oculto" id="pista-demo" style="margin-top:12px"></p>
+        </form>
+      </section>
+
+      <!-- Panel -->
+      <section id="panel" class="oculto">
+        <div class="cabecera-seccion">
+          <div>
+            <p class="eyebrow">Panel del equipo</p>
+            <h1 style="font-size:2rem">Salidas y reservas</h1>
+          </div>
+          <div class="botones" style="margin:0">
+            <span class="pista" id="usuario"></span>
+            <button class="boton pequeno secundario" id="reiniciar" hidden>Reiniciar datos demo</button>
+            <button class="boton pequeno secundario" id="salir">Cerrar sesión</button>
+          </div>
+        </div>
+
+        <div class="rejilla dos" style="align-items:start">
+          <div class="rejilla">
+            <div class="tarjeta">
+              <h2 style="font-size:1.3rem">Nueva salida</h2>
+              <form id="form-salida">
+                <div class="fila-campos">
+                  <div class="campo"><label for="s-fecha">Fecha</label><input id="s-fecha" type="date" required></div>
+                  <div class="campo"><label for="s-cupos">Cupos</label><input id="s-cupos" type="number" min="1" max="60" value="12" required></div>
+                  <div class="campo"><label for="s-minimo">Mínimo</label><input id="s-minimo" type="number" min="1" max="60" value="8" required></div>
+                </div>
+                <button class="boton" type="submit">Crear salida</button>
+                <p class="mensaje oculto" id="msg-salida" role="status"></p>
+              </form>
+            </div>
+
+            <div class="tarjeta">
+              <h2 style="font-size:1.3rem">Salidas</h2>
+              <div class="tabla-envoltura">
+                <table id="tabla-salidas">
+                  <thead><tr><th>Fecha</th><th>Cupos</th><th>Reservados</th><th>Libres</th><th></th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="tarjeta" id="detalle-salida">
+            <p class="vacio">Elige una salida para ver y registrar viajeros.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor"><span>Come.Tú Experiencias · <span data-version></span></span></div>
+  </footer>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "come-tu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Come.Tú Experiencias · Ayacucho para comer. Iteración 1 (HU-01, HU-02, HU-03, HU-06).",
+  "scripts": {
+    "start": "npx --yes serve web -l 5173",
+    "test": "node tests/aceptacion.mjs",
+    "test:sp02": "bash tests/sp02_concurrencia.sh"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
