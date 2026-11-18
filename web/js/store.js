@@ -122,7 +122,7 @@ const demo = {
 let clientePromesa = null;
 function cliente() {
   if (!clientePromesa) {
-    clientePromesa = import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm')
+    clientePromesa = import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/+esm')
       .then(({ createClient }) => createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY));
   }
   return clientePromesa;

@@ -30,7 +30,7 @@ Panel del equipo (`admin.html`): correo `equipo@cometu.pe`, contraseña `cometu2
 ## Conectar la base de datos real (Supabase)
 
 1. Crear un proyecto gratis en [supabase.com](https://supabase.com).
-2. En **SQL Editor**, ejecutar `supabase/schema.sql` y luego `supabase/seed.sql`.
+2. En **SQL Editor → New query**, pegar todo `supabase/instalar.sql` (esquema + datos iniciales) y presionar **Run**.
 3. En **Authentication → Providers → Email**, desactivar *Allow new users to sign up*.
 4. En **Authentication → Users**, crear una cuenta para cada integrante del equipo.
 5. Copiar *Project URL* y *anon public key* (Project Settings → API) en `web/js/config.js`.
