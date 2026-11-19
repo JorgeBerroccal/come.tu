@@ -1,6 +1,6 @@
 // Utilidades compartidas por todas las páginas.
 import { CONFIG } from './config.js';
-import { MODO_DEMO } from './store.js';
+import { MODO_DEMO, PAGOS_ACTIVOS } from './store.js';
 
 export const $ = (sel, raiz = document) => raiz.querySelector(sel);
 
@@ -45,10 +45,13 @@ export function htmlSalida(s) {
         <div class="detalle">${s.ocupados} de ${s.cupos} cupos reservados</div>
       </div>
       <span class="estado ${claseCupos(s.libres)}" data-prueba="cupos">${textoCupos(s.libres)}</span>
-      <div class="acciones">
+      <div class="acciones botones" style="margin:0">
         ${lleno
           ? '<button class="boton pequeno" disabled aria-disabled="true">Sin cupos</button>'
-          : `<a class="boton pequeno whatsapp" data-prueba="reservar" href="${esc(enlaceWhatsApp(mensajeReserva(s)))}" target="_blank" rel="noopener">Reservar por WhatsApp</a>`}
+          : PAGOS_ACTIVOS
+            ? `<a class="boton pequeno" data-prueba="reservar" href="reservar.html?salida=${s.id}">Reservar y pagar con Yape</a>
+               <a class="boton pequeno secundario" href="${esc(enlaceWhatsApp(mensajeReserva(s)))}" target="_blank" rel="noopener">Consultar por WhatsApp</a>`
+            : `<a class="boton pequeno whatsapp" data-prueba="reservar" href="${esc(enlaceWhatsApp(mensajeReserva(s)))}" target="_blank" rel="noopener">Reservar por WhatsApp</a>`}
       </div>
       <div class="barra" aria-hidden="true"><span style="width:${pct}%"></span></div>
     </li>`;

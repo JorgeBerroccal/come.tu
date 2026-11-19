@@ -172,6 +172,67 @@ await prueba('HU-03', 'Lo registrado en el panel se refleja en la página públi
   return texto;
 });
 
+// ---------- Iteración 2 · HU-04 (pago simulado con los números de prueba de Mercado Pago) ----------
+await prueba('HU-04', 'Desde el paquete se entra a «Reservar y pagar con Yape» y el adelanto se calcula por persona', async () => {
+  await page.goto(`${BASE}/paquete.html#fechas`);
+  await page.locator('.salida').nth(2).locator('[data-prueba="reservar"]').click();
+  await page.waitForURL(/reservar\.html\?salida=3/);
+  await page.locator('#form-pago').waitFor({ state: 'visible' });
+  const opciones = await page.locator('#p-personas option').count();
+  afirmar(opciones === 8, `se ofrecen ${opciones} opciones de personas, quedan 8 cupos`);
+  await page.selectOption('#p-personas', '2');
+  const adelanto = (await page.locator('[data-prueba="adelanto"]').textContent()).trim();
+  const saldo = (await page.locator('[data-prueba="saldo"]').textContent()).trim();
+  afirmar(adelanto === 'S/ 200' && saldo === 'S/ 440', `adelanto ${adelanto}, saldo ${saldo}`);
+  await page.fill('#p-nombre', 'Rosa Prueba');
+  await page.fill('#p-telefono', '987123456');
+  await page.fill('#p-correo', 'rosa@example.com');
+  await page.screenshot({ path: path.join(CAPTURAS, 'hu04-formulario.png'), fullPage: true });
+  return `adelanto ${adelanto}, saldo ${saldo}`;
+});
+await prueba('HU-04', 'Si Yape rechaza el pago se muestra el motivo y no se ocupa el cupo', async () => {
+  await page.fill('#p-yape', '111111117');
+  await page.fill('#p-otp', '123456');
+  await page.click('#pagar');
+  await page.locator('#error-pago').waitFor({ state: 'visible' });
+  const msg = (await page.locator('#error-pago').textContent()).trim();
+  afirmar(/código de aprobación/.test(msg), msg);
+  afirmar(await page.locator('#form-pago').isVisible(), 'el formulario desapareció');
+  return msg;
+});
+await prueba('HU-04', 'Pago aprobado: se confirma la reserva con el monto pagado y los cupos bajan', async () => {
+  await page.fill('#p-yape', '111111111');
+  await page.fill('#p-otp', '123456');
+  await page.click('#pagar');
+  await page.locator('#exito').waitFor({ state: 'visible' });
+  const pagado = (await page.locator('[data-prueba="pagado"]').textContent()).trim();
+  afirmar(pagado === 'S/ 200', `pagado ${pagado}`);
+  await page.screenshot({ path: path.join(CAPTURAS, 'hu04-confirmado.png'), fullPage: true });
+  await page.goto(`${BASE}/paquete.html#fechas`);
+  const texto = (await page.locator('.salida').nth(2).locator('[data-prueba="cupos"]').textContent()).trim();
+  afirmar(texto === 'Quedan 6 cupos', `muestra «${texto}»`);
+  return `pagado ${pagado}; ${texto}`;
+});
+await prueba('HU-04', 'Una salida agotada no permite pagar', async () => {
+  await page.goto(`${BASE}/reservar.html?salida=2`);
+  await page.locator('#resumen-salida').getByText('agotada').waitFor();
+  afirmar(!(await page.locator('#form-pago').isVisible()), 'se muestra el formulario de pago');
+  return 'sin formulario';
+});
+await prueba('HU-05', 'El panel muestra la reserva pagada por Yape y su estado de confirmación', async () => {
+  await page.goto(`${BASE}/admin.html`);
+  await page.locator('#panel').waitFor({ state: 'visible' });
+  await page.locator('[data-ver="3"]').click();
+  const fila = page.locator('#tabla-reservas tr', { hasText: 'Rosa Prueba' });
+  await fila.waitFor();
+  const origen = (await fila.locator('.origen').textContent()).trim();
+  const wa = (await fila.locator('.wa-estado').textContent()).trim();
+  afirmar(origen === 'Web · Yape S/ 200', `origen «${origen}»`);
+  await page.addStyleTag({ content: '.encabezado{position:static}' });
+  await page.locator('#detalle-salida').screenshot({ path: path.join(CAPTURAS, 'hu05-panel.png') });
+  return `${origen}; WhatsApp: ${wa}`;
+});
+
 // Capturas de presentación
 await page.goto(`${BASE}/index.html`);
 await page.evaluate(() => localStorage.removeItem('cometu-demo-v1'));

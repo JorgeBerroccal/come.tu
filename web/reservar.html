@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reservar y pagar con Yape · Come.Tú</title>
+  <meta name="description" content="Separa tu cupo en el paquete Ayacucho para comer pagando el adelanto con Yape.">
+  <meta name="theme-color" content="#3b2416">
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="img/icono-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="encabezado">
+    <div class="contenedor">
+      <a class="marca" href="index.html"><img src="img/logo.svg" alt="" width="34" height="34"><span>Come.Tú</span></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="paquete.html" aria-current="page">Paquete</a>
+        <a href="donde-comer.html">Dónde comer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="seccion">
+    <div class="contenedor" style="max-width:640px">
+      <a href="paquete.html#fechas" class="pista">← Volver a las fechas</a>
+      <p class="eyebrow" style="margin-top:1rem">Reserva</p>
+      <h1 style="font-size:clamp(1.8rem,6vw,2.4rem)">Ayacucho para comer</h1>
+      <div id="resumen-salida" class="tarjeta" aria-live="polite"><p class="vacio">Cargando la salida…</p></div>
+
+      <form id="form-pago" class="oculto" novalidate>
+        <div class="tarjeta" style="margin-top:14px">
+          <h2 style="font-size:1.3rem">Tus datos</h2>
+          <div class="campo"><label for="p-nombre">Nombre completo</label><input id="p-nombre" autocomplete="name" required maxlength="80"></div>
+          <div class="fila-campos">
+            <div class="campo"><label for="p-telefono">WhatsApp</label><input id="p-telefono" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="9xx xxx xxx" required></div>
+            <div class="campo"><label for="p-personas">Personas</label><select id="p-personas"></select></div>
+          </div>
+          <div class="campo"><label for="p-correo">Correo</label><input id="p-correo" type="email" autocomplete="email" required></div>
+          <p class="pista">Te enviaremos la confirmación al WhatsApp que escribas.</p>
+        </div>
+
+        <div class="tarjeta" style="margin-top:14px">
+          <h2 style="font-size:1.3rem">Pago del adelanto</h2>
+          <div class="resumen-pago">
+            <div><span>Adelanto ahora</span><strong data-prueba="adelanto"></strong></div>
+            <div><span>Saldo el día de la salida</span><strong data-prueba="saldo"></strong></div>
+          </div>
+          <ol class="pasos-yape">
+            <li>Abre tu app de <strong>Yape</strong>.</li>
+            <li>En el menú, entra a <strong>Código de aprobación</strong>.</li>
+            <li>Escribe aquí tu celular de Yape y el código de 6 dígitos.</li>
+          </ol>
+          <p class="mensaje aviso oculto" id="aviso-prueba"></p>
+          <div class="fila-campos">
+            <div class="campo"><label for="p-yape">Celular de Yape</label><input id="p-yape" type="tel" inputmode="numeric" autocomplete="off" required></div>
+            <div class="campo"><label for="p-otp">Código de aprobación</label><input id="p-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></div>
+          </div>
+          <button class="boton yape" type="submit" id="pagar" style="width:100%"></button>
+          <p class="mensaje error oculto" id="error-pago" role="alert"></p>
+        </div>
+      </form>
+
+      <section id="exito" class="tarjeta oculto" style="margin-top:14px" aria-live="polite">
+        <p class="eyebrow" style="color:var(--verde)">Pago aprobado</p>
+        <h2>¡Tu cupo está confirmado!</h2>
+        <dl class="datos-reserva"></dl>
+        <p id="exito-whatsapp"></p>
+        <div class="botones"><a class="boton" href="paquete.html">Ver el itinerario</a><a class="boton secundario" href="index.html">Volver al inicio</a></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="pie">
+    <div class="contenedor">
+      <span>Come.Tú Experiencias · UNSCH 2026 · <span data-version></span></span>
+      <a href="admin.html">Panel del equipo</a>
+    </div>
+  </footer>
+
+  <script type="module" src="js/reservar.js"></script>
+</body>
+</html>

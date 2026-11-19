@@ -205,3 +205,22 @@ tr.seleccionada td { background: var(--crema-2); }
 
 .vacio { color: var(--cafe-suave); padding: 16px; text-align: center; border: 1.5px dashed var(--linea); border-radius: var(--radio); }
 @media (max-width: 420px) { .nav a { padding: 8px 8px; font-size: .86rem; } .marca span { display: none; } }
+
+/* Iteración 2 · Reserva y pago con Yape */
+.boton.yape { background: #6a1b7a; }
+.boton.yape:hover { background: #561463; }
+.mensaje.aviso { background: var(--ambar-fondo); color: #6b4700; }
+.resumen-pago { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 4px 0 14px; }
+.resumen-pago div { background: var(--crema-2); border-radius: 10px; padding: 10px 12px; }
+.resumen-pago span { display: block; font-size: .8rem; color: var(--cafe-suave); }
+.resumen-pago strong { font-family: var(--fuente-titulo); font-size: 1.5rem; }
+.pasos-yape { margin: 0 0 12px; padding-left: 20px; color: var(--cafe-suave); font-size: .93rem; }
+.pasos-yape li { margin-bottom: 2px; }
+.datos-reserva { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 1rem 0; }
+.datos-reserva dt { font-weight: 600; color: var(--cafe-suave); }
+.datos-reserva dd { margin: 0; }
+.wa-estado { font-size: .8rem; font-weight: 600; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.wa-estado.enviado { background: var(--verde-fondo); color: var(--verde); }
+.wa-estado.error { background: var(--rojo-fondo); color: var(--aji); }
+.wa-estado.no_configurado, .wa-estado.ninguno { background: var(--crema-2); color: var(--cafe-suave); }
+.origen { font-size: .75rem; color: var(--cafe-suave); display: block; }

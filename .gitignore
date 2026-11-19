@@ -1,3 +1,4 @@
 node_modules/
 .DS_Store
 docs/resultados-aceptacion.json
+deno.lock

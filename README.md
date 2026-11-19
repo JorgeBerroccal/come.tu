@@ -18,6 +18,16 @@ Proyecto del curso *Innovación Tecnológica, Creatividad y Emprendimiento (IS-3
 En este release el viajero reserva escribiendo por WhatsApp y el equipo registra la reserva en el panel.
 El pago en línea (HU-04) y la confirmación automática (HU-05) llegan en el Release 2.
 
+## Iteración 2 (Release 2)
+
+| Historia | Qué hace | Dónde |
+| --- | --- | --- |
+| HU-04 Reservar y pagar adelanto | El viajero elige personas, ve adelanto y saldo, y paga el adelanto con Yape (Mercado Pago). Si se rechaza, el cupo no queda ocupado | `reservar.html`, `supabase/functions/come-tu` |
+| HU-05 Recibir confirmación | Al aprobarse el pago, llega una plantilla de WhatsApp (Cloud API de Meta). El panel muestra el estado y permite reenviar | `supabase/functions/come-tu`, `admin.html` |
+
+Configuración paso a paso: [docs/configurar-iteracion-2.md](docs/configurar-iteracion-2.md).
+Mientras `PAGOS_EN_LINEA` sea `false` en `web/js/config.js`, la web publicada sigue reservando por WhatsApp.
+
 ## Probarla en tu computadora
 
 ```bash
@@ -48,6 +58,12 @@ npm run test:sp02    # spike de concurrencia de cupos (necesita PostgreSQL: PGHO
 ```
 
 Los resultados y las capturas quedan en `docs/`.
+
+Prueba de integración del pago y WhatsApp (PostgreSQL y PostgREST reales; Mercado Pago y Meta simulados):
+
+```bash
+PGHOST=... PGPORT=... PGUSER=postgres POSTGREST_BIN=/ruta/postgrest DENO_BIN=/ruta/deno node tests/integracion/pago_whatsapp.mjs
+```
 
 ## Publicación (Small Releases)
 

@@ -79,18 +79,19 @@ async function mostrarDetalle(id) {
     <h3 style="margin-top:1.5rem">Viajeros (${reservas.length})</h3>
     <div class="tabla-envoltura">
       <table id="tabla-reservas">
-        <thead><tr><th>Nombre</th><th>WhatsApp</th><th>Pers.</th><th>Estado</th><th></th></tr></thead>
+        <thead><tr><th>Nombre</th><th>WhatsApp</th><th>Pers.</th><th>Estado</th><th>Confirmación</th><th></th></tr></thead>
         <tbody>
           ${reservas.length ? reservas.map(r => `
             <tr data-reserva="${r.id}">
-              <td>${esc(r.nombre)}</td>
+              <td>${esc(r.nombre)}<span class="origen">${r.origen === 'web' ? `Web · Yape ${r.monto ? `S/ ${Number(r.monto).toFixed(0)}` : ''}` : 'Panel'}</span></td>
               <td>${esc(r.telefono)}</td>
               <td>${r.personas}</td>
               <td><select data-estado="${r.id}" aria-label="Estado de ${esc(r.nombre)}">
                 ${['pagada', 'pendiente', 'cancelada'].map(e => `<option value="${e}" ${r.estado === e ? 'selected' : ''}>${e[0].toUpperCase() + e.slice(1)}</option>`).join('')}
               </select></td>
+              <td>${celdaConfirmacion(r)}</td>
               <td><button class="boton pequeno peligro" data-borrar="${r.id}" aria-label="Eliminar reserva de ${esc(r.nombre)}">Quitar</button></td>
-            </tr>`).join('') : '<tr><td colspan="5" class="pista">Sin viajeros todavía.</td></tr>'}
+            </tr>`).join('') : '<tr><td colspan="6" class="pista">Sin viajeros todavía.</td></tr>'}
         </tbody>
       </table>
     </div>
@@ -131,6 +132,20 @@ async function mostrarDetalle(id) {
   });
 
   $('#tabla-reservas').addEventListener('click', async e => {
+    const env = e.target.closest('[data-reenviar]');
+    if (env) {
+      env.disabled = true;
+      env.textContent = 'Enviando…';
+      try {
+        await store.reenviarConfirmacion(Number(env.dataset.reenviar));
+        await cargarSalidas();
+        mostrarMensaje($('#msg-detalle'), 'Confirmación enviada por WhatsApp.', 'ok');
+      } catch (err) {
+        await cargarSalidas();
+        mostrarMensaje($('#msg-detalle'), err.message, 'error');
+      }
+      return;
+    }
     const b = e.target.closest('[data-borrar]');
     if (!b) return;
     await store.eliminarReserva(Number(b.dataset.borrar));
@@ -149,6 +164,16 @@ async function mostrarDetalle(id) {
       mostrarMensaje($('#msg-detalle'), err.message, 'error');
     }
   });
+}
+
+// HU-05: estado del WhatsApp de confirmación y botón para (re)enviarlo
+const TEXTO_WA = { enviado: 'Enviado', error: 'Error', no_configurado: 'Sin configurar' };
+function celdaConfirmacion(r) {
+  if (r.estado !== 'pagada') return '<span class="pista">—</span>';
+  const estado = r.whatsapp_estado || 'ninguno';
+  const insignia = `<span class="wa-estado ${estado}" title="${esc(r.whatsapp_detalle || '')}">${TEXTO_WA[estado] || 'No enviado'}</span>`;
+  const boton = MODO_DEMO ? '' : `<button class="boton pequeno secundario" data-reenviar="${r.id}">${estado === 'enviado' ? 'Reenviar' : 'Enviar'}</button>`;
+  return `${insignia} ${boton}`;
 }
 
 // Lista para el hotel: solo reservas activas
