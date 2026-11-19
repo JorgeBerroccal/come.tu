@@ -21,6 +21,10 @@ const servidor = http.createServer((req, res) => {
   const archivo = path.join(WEB, ruta === '/' ? 'index.html' : ruta);
   if (!archivo.startsWith(WEB) || !fs.existsSync(archivo)) { res.writeHead(404); return res.end(); }
   res.writeHead(200, { 'Content-Type': TIPOS[path.extname(archivo)] || 'application/octet-stream' });
+  // Las pruebas usan siempre el modo demostración (datos conocidos y sin tocar la base real)
+  if (ruta.endsWith('/js/config.js')) {
+    return res.end(fs.readFileSync(archivo, 'utf8').replace(/SUPABASE_URL: '[^']*'/, "SUPABASE_URL: ''").replace(/SUPABASE_ANON_KEY: '[^']*'/, "SUPABASE_ANON_KEY: ''"));
+  }
   fs.createReadStream(archivo).pipe(res);
 });
 await new Promise(r => servidor.listen(0, r));
