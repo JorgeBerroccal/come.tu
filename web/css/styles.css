@@ -196,7 +196,7 @@ tr.seleccionada td { background: var(--crema-2); }
 .resumen div { background: var(--crema-2); border-radius: 10px; padding: 10px; text-align: center; }
 .resumen strong { display: block; font-family: var(--fuente-titulo); font-size: 1.6rem; }
 .resumen span { font-size: .8rem; color: var(--cafe-suave); }
-.oculto { display: none !important; }
+.oculto, [hidden] { display: none !important; } /* [hidden] gana a display de .boton */
 
 /* Pie */
 .pie { border-top: 1px solid var(--linea); padding: 24px 0 40px; color: var(--cafe-suave); font-size: .88rem; }

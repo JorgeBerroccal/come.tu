@@ -1,7 +1,7 @@
 // Service worker de Come.Tú: guarda los archivos de la app para que abra rápido
 // y con poca señal. Las páginas se piden primero a la red (así cada release
 // llega al usuario apenas se publica) y, si no hay conexión, se usa la copia.
-const VERSION = 'cometu-v1.0.0';
+const VERSION = 'cometu-v1.0.1';
 const ARCHIVOS = [
   './', 'index.html', 'paquete.html', 'donde-comer.html', 'admin.html',
   'css/styles.css', 'js/config.js', 'js/contenido.js', 'js/store.js', 'js/ui.js', 'js/admin.js',

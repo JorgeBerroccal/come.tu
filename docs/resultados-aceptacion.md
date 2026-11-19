@@ -1,6 +1,6 @@
 # Resultados de las pruebas de aceptación · Iteración 1
 
-Ejecutado el 18/11/2026, 7:15:20 p. m. · 12 de 12 pruebas aprobadas.
+Ejecutado el 19/11/2026, 10:28:31 a. m. · 12 de 12 pruebas aprobadas.
 
 | Historia | Criterio | Resultado | Detalle |
 | --- | --- | --- | --- |
@@ -9,8 +9,8 @@ Ejecutado el 18/11/2026, 7:15:20 p. m. · 12 de 12 pruebas aprobadas.
 | HU-03 | Salida con 12 cupos y 9 reservas pagadas muestra «Quedan 3 cupos» y permite reservar | Aprobado | Quedan 3 cupos |
 | HU-03 | Salida sin cupos aparece como «Agotado» y no deja reservar | Aprobado | Agotado |
 | HU-06 | Solo el equipo entra al panel: sin sesión no se ve y una contraseña incorrecta se rechaza | Aprobado | Correo o contraseña incorrectos. |
-| HU-06 | El operador inicia sesión y crea una salida con fecha y cupos | Aprobado | salida del 2027-01-02 creada |
-| HU-06 | Al registrar una reserva, la lista de viajeros y los cupos libres se actualizan al instante | Aprobado | libres 3 → 0 en 57 ms |
+| HU-06 | El operador inicia sesión y crea una salida con fecha y cupos | Aprobado | salida del 2027-01-03 creada |
+| HU-06 | Al registrar una reserva, la lista de viajeros y los cupos libres se actualizan al instante | Aprobado | libres 3 → 0 en 52 ms |
 | HU-06 | No se puede registrar una reserva si ya no hay cupos (sin sobreventa) | Aprobado | No hay cupos suficientes: la salida está agotada. |
 | HU-06 | Se descarga la lista de viajeros para el hotel | Aprobado | cometu-salida-2026-11-21.csv con 5 viajeros |
 | HU-03 | Lo registrado en el panel se refleja en la página pública (la salida pasa a «Agotado») | Aprobado | Agotado |
@@ -21,9 +21,9 @@ Ejecutado el 18/11/2026, 7:15:20 p. m. · 12 de 12 pruebas aprobadas.
 
 | Red | Página | Tiempo | Peso |
 | --- | --- | --- | --- |
-| 4G (lenta) | index.html | 1.04 s | 80 KB |
+| 4G (lenta) | index.html | 1.03 s | 80 KB |
 | 4G (lenta) | paquete.html | 1.06 s | 74 KB |
 | 4G (lenta) | donde-comer.html | 1.04 s | 80 KB |
-| 3G (rápida) | index.html | 2.34 s | 80 KB |
-| 3G (rápida) | paquete.html | 2.38 s | 74 KB |
-| 3G (rápida) | donde-comer.html | 2.34 s | 80 KB |
+| 3G (rápida) | index.html | 2.35 s | 80 KB |
+| 3G (rápida) | paquete.html | 2.36 s | 74 KB |
+| 3G (rápida) | donde-comer.html | 2.33 s | 80 KB |
